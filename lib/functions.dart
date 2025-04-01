@@ -1,10 +1,14 @@
 import 'dart:math';
 
+/// function to generate random string
 String generateRandomString(int length) {
-  const String chars = 'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-  Random random = Random();
+  /// list of characters allowed
+  const chars =
+      'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+  //   Random random = Random();
 
-  return List.generate(length, (index) => chars[random.nextInt(chars.length)]).join();
+  return List.generate(
+    length,
+    (index) => chars[Random().nextInt(chars.length)],
+  ).join();
 }
-
-
