@@ -1,73 +1,80 @@
-// ignore_for_file: prefer_expression_function_bodies
-
-import 'dart:math';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
 
-class CustomGridview extends StatefulWidget {
-  const CustomGridview({super.key});
+class HouseGrid extends StatefulWidget {
+  // const HouseGrid({super.key, required})
 
   @override
-  State<CustomGridview> createState() => _CustomGridviewState();
+  State<HouseGrid> createState() => _HouseGridState();
 }
 
-class Tile extends StatelessWidget {
-  Tile({Key? key}) : super(key: key);
+class _HouseGridState extends State<HouseGrid> {
+  bool isOff = true;
+  final List<String> imagePathsOff = [
+    "assets/images/b1-off.jpeg",
+    "assets/images/lv1-off.jpeg",
+    "assets/images/room-off.jpeg",
+    "assets/images/stairs-off.jpeg",
+    "assets/images/dinner-off.jpeg",
+    "assets/images/stairs-off.jpeg",
+    "assets/images/bd2-off.jpeg",
+  ];
+  final List<String> imagePathsOn = [
+    "assets/images/b1-on.jpeg",
+    "assets/images/lv1-on.jpeg",
+    "assets/images/room-on.jpeg",
+    "assets/images/stairs-on.jpeg",
+    "assets/images/dinner-on.jpeg",
+    "assets/images/stairs-on.jpeg",
+    "assets/images/bd2-on.jpeg",
+  ];
 
-  final Color color = _getRandomColor();
-
-  static Color _getRandomColor() {
-    final Random random = Random();
-    return Color.fromRGBO(
-      random.nextInt(256),
-      random.nextInt(256),
-      random.nextInt(256),
-      1,
-    );
+  void switchLight() {
+    setState(() {
+      isOff = !isOff;
+    });
   }
 
   @override
-  Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        color: color,
-        // borderRadius: BorderRadius.circular(10),
-      ),
-    //   margin: EdgeInsets.all(0),
-    );
-  }
-}
-
-class _CustomGridviewState extends State<CustomGridview> {
-  @override
-  Widget build(BuildContext context) {
-    return StaggeredGrid.count(
-      crossAxisCount: 8,
-    //   mainAxisSpacing: 0,
-    //   crossAxisSpacing: 0,
+  Widget build(BuildContext context) => SizedBox(
+    height:
+        MediaQuery.of(context).size.height *
+        0.60, // Set the height to half of the screen
+    width: MediaQuery.of(context).size.width * 0.60, // Take full width
+    child: Column(
       children: [
-        const StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 1,
-          child: Image(image: AssetImage("assets/images/bc1.jpeg")),
+        // First row (3 images)
+        Expanded(
+          child: Row(
+            children: List.generate(
+              4,
+              (index) => Image.asset(
+                isOff ? imagePathsOff[index] : imagePathsOn[index],
+              ),
+            ),
+          ),
         ),
-        const StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 3,
-          child: Image(image: AssetImage("assets/images/bc2.jpeg")),
+        Expanded(
+          child: Row(
+            children: List.generate(
+              3,
+              (index) => Image.asset(
+                isOff ? imagePathsOff[index + 4] : imagePathsOn[index + 4],
+              ),
+            ),
+          ),
         ),
-        const StaggeredGridTile.count(
-          crossAxisCellCount: 1,
-          mainAxisCellCount: 2,
-          child: Image(image: AssetImage("assets/images/bc3.jpeg")),
+        Container(
+          margin: EdgeInsets.all(10),
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: switchLight,
+                child: Text("Switch Light"),
+              ),
+            ],
+          ),
         ),
-        // StaggeredGridTile.count(
-        //   crossAxisCellCount: 2,
-        //   mainAxisCellCount: 2,
-        //   child: Tile(),
-        // ),
       ],
-    );
-  }
+    ),
+  );
 }
