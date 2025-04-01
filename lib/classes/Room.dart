@@ -1,4 +1,7 @@
+import 'package:flutter_domotic_app/functions.dart';
+
 class Room {
+  String _id=generateRandomString(8);
   String name;
   String _imageOn;
   String _imageOff;
@@ -8,13 +11,16 @@ class Room {
 
   bool switchLight() {
     _isOn = !_isOn;
+	print("room $_id switched");
     return true;
   }
 
-  bool getState()=>_isOn;
+  bool getState() => _isOn;
 
   String getImage() => _isOn ? _imageOn : _imageOff;
 
-  Room(this.name, this._imageOn, this._imageOff, this._isOn);
-}
+  String getId()=>_id;
 
+  Room(this.name, this._imageOn, this._imageOff, this._isOn);
+
+}

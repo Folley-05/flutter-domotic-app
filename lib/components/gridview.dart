@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_domotic_app/classes/Room.dart';
+import 'package:flutter_domotic_app/socket/socket.dart';
 
 final List<Room> rooms = [
   new Room(
@@ -83,25 +84,6 @@ class HouseGrid extends StatefulWidget {
 
 class _HouseGridState extends State<HouseGrid> {
   bool isOff = true;
-  final List<String> imagePathsOff = [
-    "assets/images/b1-off.jpeg",
-    "assets/images/lv1-off.jpeg",
-    "assets/images/room-off.jpeg",
-    "assets/images/stairs-off.jpeg",
-    "assets/images/dinner-off.jpeg",
-    "assets/images/stairs-off.jpeg",
-    "assets/images/bd2-off.jpeg",
-  ];
-  final List<String> imagePathsOn = [
-    "assets/images/b1-on.jpeg",
-    "assets/images/lv1-on.jpeg",
-    "assets/images/room-on.jpeg",
-    "assets/images/stairs-on.jpeg",
-    "assets/images/dinner-on.jpeg",
-    "assets/images/stairs-on.jpeg",
-    "assets/images/bd2-on.jpeg",
-  ];
-
   void switchLight() {
     // setState(() {
     //   isOff = !isOff;
@@ -113,13 +95,16 @@ class _HouseGridState extends State<HouseGrid> {
       print(room);
     }
     setState(() {});
-
-    // print(rooms[0].toString());
   }
 
   void switchRoomLight() {
     setState(() {});
     print("switch a room light executed");
+  }
+
+  void testSocket() {
+    print("trying to connect to socket ");
+    connectSocket(rooms, switchRoomLight);
   }
 
   @override
@@ -166,6 +151,8 @@ class _HouseGridState extends State<HouseGrid> {
                           .toList(),
                 ),
               ),
+
+              ElevatedButton(onPressed: testSocket, child: Text("Connect To Server")),
             ],
           ),
         ),
