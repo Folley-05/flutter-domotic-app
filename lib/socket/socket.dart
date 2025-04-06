@@ -10,9 +10,10 @@ Future<bool> connectSocket(List<Room> rooms, Function refresh) async {
     print('Connected to: ${socket.remoteAddress.address}:${socket.remotePort}');
 
     // Send data to the server
-    socket.write('Hello Server');
+    // socket.write('Hello Server');
 
-    List<String> ids = rooms.map((room) => room.getId()).toList();
+    List<Map<String, dynamic>> ids =
+        rooms.map((room) => room.toJson()).toList();
     socket.write(json.encode(ids));
 
     // Listen for responses
@@ -23,20 +24,34 @@ Future<bool> connectSocket(List<Room> rooms, Function refresh) async {
         List<String> order = message.split("-");
         switch (order[1]) {
           case "off":
-            rooms.map((room)=>room.getId()==order[0] && room.switchLight()).toList();
-			
+            rooms
+                .map((room) => room.getId() == order[0] && room.switchLight())
+                .toList();
+
             print("the room id : ${order[0]}");
-			
+
             // rooms.map((room) {
             //   print("the actual room id ${room.getId()}");
             //   if (room.getId() == order[0]) {
             //     print("Room founded ${room.getId()}");
             //   }
             // }).toList();
-          refresh();
-          case "on":
-            rooms.map((room) => room.getId() == order[0] && room.switchLight());
             refresh();
+          case "on":
+            rooms
+                .map((room) => room.getId() == order[0] && room.switchLight())
+                .toList();
+            refresh();
+          case "switch":
+            print("the room id : ${order[0]}");
+            rooms
+                .map((room) => room.getId() == order[0] && room.switchLight())
+                .toList();
+            refresh();
+            List<Map<String, dynamic>> ids =
+                rooms.map((room) => room.toJson()).toList();
+            socket.write(json.encode(ids));
+
             break;
           default:
         }

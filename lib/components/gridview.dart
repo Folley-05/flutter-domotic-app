@@ -81,7 +81,7 @@ class _RoomRowState extends State<RoomRow> {
 
 /// Grid displaying the different house's rooms
 class HouseGrid extends StatefulWidget {
-	/// Grid constructor
+  /// Grid constructor
   const HouseGrid({super.key});
 
   // const HouseGrid({super.key, required})
@@ -115,37 +115,43 @@ class _HouseGridState extends State<HouseGrid> {
   }
 
   @override
-  Widget build(BuildContext context) => SizedBox(
-    height:
-        MediaQuery.of(context).size.height *
-        0.60, // Set the height to half of the screen
-    width: MediaQuery.of(context).size.width * 0.60, // Take full width
-    child: Column(
-      children: [
-        // First row (3 images)
-        Expanded(
-          child: Row(
-            children: List.generate(
-              4,
-              (index) => Image.asset(rooms[index].getImage()),
+  Widget build(BuildContext context) => Row(
+    children: [
+      SizedBox(
+        height:
+            MediaQuery.of(context).size.height *
+            0.60, // Set the height to half of the screen
+        width: MediaQuery.of(context).size.width * 0.60, // Take full width
+        child: Column(
+          children: [
+            // First row (3 images)
+            Expanded(
+              child: Row(
+                children: List.generate(
+                  4,
+                  (index) => Image.asset(rooms[index].getImage()),
+                ),
+              ),
             ),
-          ),
-        ),
-        Expanded(
-          child: Row(
-            children: List.generate(
-              3,
-              (index) => Image.asset(rooms[index + 4].getImage()),
+            Expanded(
+              child: Row(
+                children: List.generate(
+                  3,
+                  (index) => Image.asset(rooms[index + 4].getImage()),
+                ),
+              ),
             ),
-          ),
+          ],
         ),
-        Container(
+      ),
+      SizedBox(
+        child: Container(
           margin: const EdgeInsets.all(10),
           child: Column(
             children: [
               ElevatedButton(
                 onPressed: switchLight,
-                child: const Text("Switch Light"),
+                child: const Text("Switch All Light"),
               ),
               Container(
                 child: Column(
@@ -166,7 +172,7 @@ class _HouseGridState extends State<HouseGrid> {
             ],
           ),
         ),
-      ],
-    ),
+      ),
+    ],
   );
 }
