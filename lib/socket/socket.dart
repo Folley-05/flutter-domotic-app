@@ -1,41 +1,32 @@
-import 'dart:io';
 import 'dart:convert';
+import 'dart:io';
 
-import 'package:flutter_domotic_app/classes/Room.dart';
+import 'package:flutter_domotic_app/classes/room.dart';
 
+/// Function to handle socket connection with the server
 Future<bool> connectSocket(List<Room> rooms, Function refresh) async {
   // Connect to a TCP server
   try {
-    Socket socket = await Socket.connect('127.0.0.1', 3500);
-    print('Connected to: ${socket.remoteAddress.address}:${socket.remotePort}');
+    final socket = await Socket.connect('127.0.0.1', 3500);
 
     // Send data to the server
     // socket.write('Hello Server');
 
-    List<Map<String, dynamic>> ids =
+    final ids =
         rooms.map((room) => room.toJson()).toList();
     socket.write(json.encode(ids));
 
     // Listen for responses
     socket.listen(
       (data) {
-        String message = utf8.decode(data);
-        print('Message received : ${message}');
-        List<String> order = message.split("-");
+        final  message = utf8.decode(data);
+        final order = message.split("-");
         switch (order[1]) {
           case "off":
             rooms
                 .map((room) => room.getId() == order[0] && room.switchLight())
                 .toList();
 
-            print("the room id : ${order[0]}");
-
-            // rooms.map((room) {
-            //   print("the actual room id ${room.getId()}");
-            //   if (room.getId() == order[0]) {
-            //     print("Room founded ${room.getId()}");
-            //   }
-            // }).toList();
             refresh();
           case "on":
             rooms
@@ -43,31 +34,24 @@ Future<bool> connectSocket(List<Room> rooms, Function refresh) async {
                 .toList();
             refresh();
           case "switch":
-            print("the room id : ${order[0]}");
             rooms
                 .map((room) => room.getId() == order[0] && room.switchLight())
                 .toList();
             refresh();
-            List<Map<String, dynamic>> ids =
-                rooms.map((room) => room.toJson()).toList();
+            final ids = rooms.map((room) => room.toJson()).toList();
             socket.write(json.encode(ids));
 
             break;
           default:
         }
       },
-      onDone: () {
-        print('Server disconnected');
-        socket.destroy();
-      },
+      onDone: socket.destroy,
       onError: (error) {
-        print('Error: $error');
         socket.destroy();
       },
     );
     return true;
   } catch (e) {
-    print("communication failed with the server $e");
     return false;
   }
 }

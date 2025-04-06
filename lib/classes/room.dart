@@ -1,9 +1,6 @@
 import 'package:flutter_domotic_app/functions.dart';
 
-/// Room class representation
-import 'dart:math';
-
-// Dummy function to simulate ID generation
+/// class representing a room in the house
 class Room {
   /// Room ID
   final String _id;
@@ -39,13 +36,15 @@ class Room {
   /// Function to switch light state
   bool switchLight() {
     _isOn = !_isOn;
-    print("room $_id switched");
     return true;
   }
 
+  /// return the state of the room
   bool getState() => _isOn;
 
+  /// return the image path of the room
   String getImage() => _isOn ? _imageOn : _imageOff;
 
+  /// return the id of the room
   String getId() => _id;
 }

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_domotic_app/classes/Room.dart';
+import 'package:flutter_domotic_app/classes/room.dart';
 import 'package:flutter_domotic_app/socket/socket.dart';
 
 /// The list of room
@@ -95,23 +95,18 @@ class _HouseGridState extends State<HouseGrid> {
     // setState(() {
     //   isOff = !isOff;
     // });
-    print("switch light");
     for (final room in rooms) {
-      print(room);
       room.switchLight();
-      print(room);
     }
     setState(() {});
   }
 
   void switchRoomLight() {
     setState(() {});
-    print("switch a room light executed");
   }
 
-  void testSocket() {
-    print("trying to connect to socket ");
-    connectSocket(rooms, switchRoomLight);
+  Future<void> testSocket() async {
+    await connectSocket(rooms, switchRoomLight);
   }
 
   @override
@@ -153,16 +148,14 @@ class _HouseGridState extends State<HouseGrid> {
                 onPressed: switchLight,
                 child: const Text("Switch All Light"),
               ),
-              Container(
-                child: Column(
-                  children:
-                      rooms
-                          .map(
-                            (room) =>
-                                RoomRow(room: room, action: switchRoomLight),
-                          )
-                          .toList(),
-                ),
+              Column(
+                children:
+                    rooms
+                        .map(
+                          (room) =>
+                              RoomRow(room: room, action: switchRoomLight),
+                        )
+                        .toList(),
               ),
 
               ElevatedButton(
